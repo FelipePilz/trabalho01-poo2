@@ -1,7 +1,9 @@
 # trabalho01-poo2
 Repositório pro primeiro trabalho de POO2
 
-Diagrama de MER
+# Script SQL
+O script sql está localizado na [pasta resources](src/main/resources/imobiliaria.sql)
 
-Instruções SQL
+# Diagrama MER
+![Diagrama de MER](src/main/resources/diagrama-mer.png)
 
