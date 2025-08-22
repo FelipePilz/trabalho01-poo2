@@ -58,6 +58,44 @@ public class ContratoDAO extends BaseDAO {
         }
     }
 
+    public List<Contrato> findAtivos() {
+        String sql = "SELECT * FROM contratos WHERE ativo = TRUE";
+
+        try (Connection con = con();
+             PreparedStatement pre = con.prepareStatement(sql)) {
+
+            ResultSet rs = pre.executeQuery();
+
+            List<Contrato> contratos = new ArrayList<>();
+            while (rs.next()) {
+                contratos.add(mapRow(rs));
+            }
+            return contratos;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar contratos ativos", e);
+        }
+    }
+
+    public List<Contrato> findContratosExpirandoProximos30Dias() {
+        String sql = "SELECT * FROM contratos " +
+                "WHERE data_fim BETWEEN CURRENT_DATE() AND DATE_ADD(CURRENT_DATE(), INTERVAL 30 DAY) " +
+                "AND ativo = TRUE";
+
+        try (Connection con = con();
+             PreparedStatement pre = con.prepareStatement(sql)) {
+
+            ResultSet rs = pre.executeQuery();
+
+            List<Contrato> contratos = new ArrayList<>();
+            while (rs.next()) {
+                contratos.add(mapRow(rs));
+            }
+            return contratos;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar contratos expirando nos próximos 30 dias", e);
+        }
+    }
+
     private void validateCreate(Contrato contrato) {
         if (contrato == null) {
             throw new RuntimeException("Contrato não pode ser nulo");

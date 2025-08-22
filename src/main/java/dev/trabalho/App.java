@@ -1,14 +1,8 @@
 package dev.trabalho;
 
-import dev.trabalho.dao.cliente.Cliente;
 import dev.trabalho.dao.cliente.ClienteDAO;
-import dev.trabalho.dao.contrato.Contrato;
 import dev.trabalho.dao.contrato.ContratoDAO;
-import dev.trabalho.dao.imovel.Imovel;
 import dev.trabalho.dao.imovel.ImovelDAO;
-
-import java.math.BigDecimal;
-import java.sql.Date;
 
 /**
  * Hello world!

@@ -69,6 +69,29 @@ public class ClienteDAO extends BaseDAO {
         }
     }
 
+    public Cliente findClienteComMaisContratos() {
+        String sql = "SELECT c.*, COUNT(ct.id) AS total_contratos " +
+                "FROM clientes c " +
+                "JOIN contratos ct ON c.id = ct.id_cliente " +
+                "GROUP BY c.id " +
+                "ORDER BY total_contratos DESC " +
+                "LIMIT 1";
+
+        try (Connection con = con();
+             PreparedStatement pre = con.prepareStatement(sql)) {
+
+            ResultSet rs = pre.executeQuery();
+
+            if (rs.next()) {
+                return mapRow(rs);
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar cliente com mais contratos", e);
+        }
+    }
+
 
     private void validateCreate(Cliente cliente) {
         if (cliente.getNome() == null || cliente.getNome().isEmpty()) {

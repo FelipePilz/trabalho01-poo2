@@ -68,6 +68,24 @@ public class ImovelDAO extends BaseDAO {
         }
     }
 
+    public List<Imovel> findDisponiveis() {
+        String sql = "SELECT * FROM imoveis WHERE disponivel = TRUE";
+
+        try (Connection con = con();
+             PreparedStatement pre = con.prepareStatement(sql)) {
+
+            ResultSet rs = pre.executeQuery();
+
+            List<Imovel> imoveis = new ArrayList<>();
+            while (rs.next()) {
+                imoveis.add(mapRow(rs));
+            }
+            return imoveis;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar imóveis disponíveis", e);
+        }
+    }
+
     private void validateCreate(Imovel imovel) {
         if (imovel.getEndereco() == null && imovel.getEndereco().isEmpty()) {
             throw new RuntimeException("Endereço do imóvel não pode estar vazio");
