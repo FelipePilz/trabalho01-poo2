@@ -92,7 +92,6 @@ public class ClienteDAO extends BaseDAO {
         }
     }
 
-
     private void validateCreate(Cliente cliente) {
         if (cliente.getNome() == null || cliente.getNome().isEmpty()) {
             throw new RuntimeException("Nome do cliente não pode ser vazio");

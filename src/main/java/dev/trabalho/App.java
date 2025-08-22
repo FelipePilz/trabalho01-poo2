@@ -1,8 +1,16 @@
 package dev.trabalho;
 
+import dev.trabalho.dao.cliente.Cliente;
 import dev.trabalho.dao.cliente.ClienteDAO;
+import dev.trabalho.dao.contrato.Contrato;
 import dev.trabalho.dao.contrato.ContratoDAO;
+import dev.trabalho.dao.imovel.Imovel;
 import dev.trabalho.dao.imovel.ImovelDAO;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Hello world!
@@ -12,37 +20,174 @@ public class App {
     public static ClienteDAO clienteDAO = new ClienteDAO();
     public static ImovelDAO imovelDAO = new ImovelDAO();
     public static ContratoDAO contratoDAO = new ContratoDAO();
+    public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n=== Sistema de Gestão da Imobiliária ===");
+            System.out.println("1. Cadastrar imóvel");
+            System.out.println("2. Cadastrar cliente");
+            System.out.println("3. Cadastrar contrato");
+            System.out.println("4. Listar imóveis disponíveis");
+            System.out.println("5. Listar contratos ativos");
+            System.out.println("6. Cliente com mais contratos");
+            System.out.println("7. Contratos expirando nos próximos 30 dias");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
 
-        //Cliente cliente = new Cliente(null, "1234", "1234", "felipe.pilz@univile.br", "Casa minha");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
 
+            switch (opcao) {
+                case 1:
+                    cadastrarImovel();
+                    break;
 
-        //clienteDAO.create(cliente);
+                case 2:
+                    cadastrarCliente();
+                    break;
 
-        /*
-        imovelDAO.create(new Imovel(
-                "Rua das Flores, 123",
-                "Apartamento",
-                true
-        ));
-         */
+                case 3:
+                    cadastrarContrato();
+                    break;
 
-        /*
-        contratoDAO.create(new Contrato(
-                1,
-                1,
-                Date.valueOf("2025-09-01"),
-                Date.valueOf("2026-08-31"),
-                new BigDecimal("2500.00"),
-                true,
-                "Contrato de teste para apartamento"
-        ));
-         */
+                case 4:
+                    listarImoveisDisponiveis();
+                    break;
 
+                case 5:
+                    listarContratosAtivos();
+                    break;
 
-        System.out.println(clienteDAO.find());
-        System.out.println(imovelDAO.find());
-        System.out.println(contratoDAO.find());
+                case 6:
+                    listarClienteComMaisContratos();
+                    break;
+
+                case 7:
+                    listarContratosExpirandoNosProximos30Dias();
+                    break;
+
+                case 0:
+                    running = false;
+                    System.out.println("Saindo do sistema...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+
+        scanner.close();
     }
+
+    private static void cadastrarImovel() {
+        System.out.print("Endereço: ");
+        String endereco = scanner.nextLine();
+        System.out.print("Descrição: ");
+        String descricao = scanner.nextLine();
+        System.out.print("Tem garagem? (true/false): ");
+        boolean garagem = scanner.nextBoolean();
+
+        try {
+            imovelDAO.create(new Imovel(endereco, descricao, garagem));
+            System.out.println("Imóvel cadastrado com sucesso!");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void cadastrarCliente() {
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Endereço: ");
+        String enderecoCliente = scanner.nextLine();
+
+        try {
+            clienteDAO.create(new Cliente(nome, cpf, telefone, email, enderecoCliente));
+            System.out.println("Cliente cadastrado com sucesso!");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void cadastrarContrato() {
+        System.out.print("ID do imóvel: ");
+        int idImovel = scanner.nextInt();
+        System.out.print("ID do cliente: ");
+        int idCliente = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Data de início (yyyy-MM-dd): ");
+        Date dataInicio = Date.valueOf(scanner.nextLine());
+        System.out.print("Data de fim (yyyy-MM-dd): ");
+        Date dataFim = Date.valueOf(scanner.nextLine());
+        System.out.print("Valor do contrato: ");
+        BigDecimal valorContrato = scanner.nextBigDecimal();
+        System.out.print("Ativo? (true/false): ");
+        boolean ativo = scanner.nextBoolean();
+        scanner.nextLine();
+        System.out.print("Observações: ");
+        String observacoes = scanner.nextLine();
+
+        try {
+            contratoDAO.create(new Contrato(idImovel, idCliente, dataInicio, dataFim, valorContrato, ativo, observacoes));
+            System.out.println("Contrato cadastrado com sucesso!");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void listarImoveisDisponiveis() {
+        try {
+            List<Imovel> disponiveis = imovelDAO.findDisponiveis();
+
+            System.out.println("=== Imóveis disponíveis ===");
+            for (Imovel i : disponiveis) {
+                System.out.println(i);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void listarContratosAtivos() {
+        try {
+            List<Contrato> contratosAtivos = contratoDAO.findAtivos();
+            System.out.println("=== Contratos ativos ===");
+            for (Contrato c : contratosAtivos) {
+                System.out.println(c);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void listarClienteComMaisContratos() {
+        try {
+            Cliente topCliente = clienteDAO.findClienteComMaisContratos();
+            System.out.println("=== Cliente com mais contratos ===");
+            System.out.println(topCliente);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void listarContratosExpirandoNosProximos30Dias() {
+        try {
+            List<Contrato> proximosExpirar = contratoDAO.findContratosExpirandoProximos30Dias();
+            System.out.println("=== Contratos expirando nos próximos 30 dias ===");
+            for (Contrato c : proximosExpirar) {
+                System.out.println(c);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

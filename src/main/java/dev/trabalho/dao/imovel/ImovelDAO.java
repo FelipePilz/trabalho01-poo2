@@ -87,11 +87,11 @@ public class ImovelDAO extends BaseDAO {
     }
 
     private void validateCreate(Imovel imovel) {
-        if (imovel.getEndereco() == null && imovel.getEndereco().isEmpty()) {
+        if (imovel.getEndereco() == null || imovel.getEndereco().isEmpty()) {
             throw new RuntimeException("Endereço do imóvel não pode estar vazio");
         }
 
-        if (imovel.getDescricao() == null && imovel.getDescricao().isEmpty()) {
+        if (imovel.getDescricao() == null || imovel.getDescricao().isEmpty()) {
             throw new RuntimeException("Descrição do imóvel não pode estar vazio");
         }
     }
