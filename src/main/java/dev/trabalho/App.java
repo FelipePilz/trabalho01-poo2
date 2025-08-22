@@ -26,15 +26,51 @@ public class App {
         boolean running = true;
         while (running) {
             System.out.println("\n=== Sistema de Gestão da Imobiliária ===");
+            System.out.println("1. Cadastrar");
+            System.out.println("2. Consultar");
+            System.out.println("3. Relatórios");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    menuCadastrar();
+                    break;
+
+                case 2:
+                    menuConsultar();
+                    break;
+
+                case 3:
+                    menuRelatorios();
+                    break;
+
+                case 0:
+                    running = false;
+                    System.out.println("Saindo do sistema...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static void menuCadastrar() {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n=== Menu de Cadastro ===");
             System.out.println("1. Cadastrar imóvel");
             System.out.println("2. Cadastrar cliente");
             System.out.println("3. Cadastrar contrato");
-            System.out.println("4. Listar imóveis disponíveis");
-            System.out.println("5. Listar contratos ativos");
-            System.out.println("6. Cliente com mais contratos");
-            System.out.println("7. Contratos expirando nos próximos 30 dias");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
+
 
             int opcao = scanner.nextInt();
             scanner.nextLine();
@@ -52,33 +88,131 @@ public class App {
                     cadastrarContrato();
                     break;
 
-                case 4:
-                    listarImoveisDisponiveis();
-                    break;
-
-                case 5:
-                    listarContratosAtivos();
-                    break;
-
-                case 6:
-                    listarClienteComMaisContratos();
-                    break;
-
-                case 7:
-                    listarContratosExpirandoNosProximos30Dias();
-                    break;
-
                 case 0:
                     running = false;
-                    System.out.println("Saindo do sistema...");
+                    System.out.println("Voltando...");
                     break;
 
                 default:
                     System.out.println("Opção inválida!");
             }
         }
+    }
 
-        scanner.close();
+    private static void menuConsultar() {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n=== Menu de Consulta ===");
+            System.out.println("1. Consultar imóveis");
+            System.out.println("2. Consultar clientes");
+            System.out.println("3. Consultar contratos");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+            switch (opcao) {
+                case 1:
+                    consultarImoveis();
+                    break;
+
+                case 2:
+                    consultarClientes();
+                    break;
+
+                case 3:
+                    consultarContratos();
+                    break;
+
+                case 0:
+                    running = false;
+                    System.out.println("Voltando...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
+
+    private static void consultarImoveis() {
+        try {
+            List<Imovel> imoveis = imovelDAO.find();
+            System.out.println("=== Imóveis ===");
+            for (Imovel i : imoveis) {
+                System.out.println(i);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private static void consultarClientes() {
+        try {
+            List<Cliente> clientes = clienteDAO.find();
+            System.out.println("=== Clientes ===");
+            for (Cliente c : clientes) {
+                System.out.println(c);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private static void consultarContratos() {
+        try {
+            List<Contrato> contratos = contratoDAO.find();
+            System.out.println("=== Contratos ===");
+            for (Contrato c : contratos) {
+                System.out.println(c);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void menuRelatorios() {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n=== Menu de Relatórios ===");
+            System.out.println("1. Listar imóveis disponíveis");
+            System.out.println("2. Listar contratos ativos");
+            System.out.println("3. Cliente com mais contratos");
+            System.out.println("4. Contratos expirando nos próximos 30 dias");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    listarImoveisDisponiveis();
+                    break;
+
+                case 2:
+                    listarContratosAtivos();
+                    break;
+
+                case 3:
+                    listarClienteComMaisContratos();
+                    break;
+
+                case 4:
+                    listarContratosExpirandoNosProximos30Dias();
+                    break;
+
+                case 0:
+                    running = false;
+                    System.out.println("Voltando...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
     }
 
     private static void cadastrarImovel() {
@@ -143,7 +277,7 @@ public class App {
         }
     }
 
-    public static void listarImoveisDisponiveis() {
+    private static void listarImoveisDisponiveis() {
         try {
             List<Imovel> disponiveis = imovelDAO.findDisponiveis();
 
@@ -156,7 +290,7 @@ public class App {
         }
     }
 
-    public static void listarContratosAtivos() {
+    private static void listarContratosAtivos() {
         try {
             List<Contrato> contratosAtivos = contratoDAO.findAtivos();
             System.out.println("=== Contratos ativos ===");
@@ -168,7 +302,7 @@ public class App {
         }
     }
 
-    public static void listarClienteComMaisContratos() {
+    private static void listarClienteComMaisContratos() {
         try {
             Cliente topCliente = clienteDAO.findClienteComMaisContratos();
             System.out.println("=== Cliente com mais contratos ===");
@@ -178,7 +312,7 @@ public class App {
         }
     }
 
-    public static void listarContratosExpirandoNosProximos30Dias() {
+    private static void listarContratosExpirandoNosProximos30Dias() {
         try {
             List<Contrato> proximosExpirar = contratoDAO.findContratosExpirandoProximos30Dias();
             System.out.println("=== Contratos expirando nos próximos 30 dias ===");
