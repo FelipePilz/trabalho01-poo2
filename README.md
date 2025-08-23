@@ -11,5 +11,5 @@ O script sql está localizado na [pasta resources](src/main/resources/imobiliari
 ![Diagrama de MER](src/main/resources/diagrama-mer.png)
 
 # Diagrama de Classes
-![Diagrama de Classe]()
+![Diagrama de Classe](src/main/resources/diagrama-classe.png)
 

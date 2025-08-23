@@ -48,8 +48,8 @@ CREATE TABLE `contratos`
 );
 
 INSERT INTO `imoveis` (`endereco`, `descricao`, `garagem`, `disponivel`)
-VALUES ('Rua das Flores, 123, São Paulo', 'Apartamento 2 quartos, 1 suíte, sala ampla, cozinha planejada.', 1, 1),
-       ('Av. Brasil, 456, Rio de Janeiro', 'Casa térrea com 3 quartos, quintal grande e piscina.', 1, 1),
+VALUES ('Rua das Flores, 123, São Paulo', 'Apartamento 2 quartos, 1 suíte, sala ampla, cozinha planejada.', 1, 0),
+       ('Av. Brasil, 456, Rio de Janeiro', 'Casa térrea com 3 quartos, quintal grande e piscina.', 1, 0),
        ('Rua Amapá, 789, Belo Horizonte', 'Apartamento compacto, 1 quarto, ideal para solteiros.', 0, 1);
 
 INSERT INTO `clientes` (`nome`, `cpf`, `telefone`, `email`, `endereco`)
@@ -61,5 +61,4 @@ VALUES ('João Silva', '123.456.789-00', '(11) 98765-4321', 'joao.silva@email.co
 
 INSERT INTO `contratos` (`id_imovel`, `id_cliente`, `data_inicio`, `data_fim`, `valor`, `ativo`, `observacoes`)
 VALUES (1, 1, '2025-08-01', '2026-07-31', 2500.00, 1, 'Pagamento mensal até o dia 5.'),
-       (2, 2, '2025-09-01', '2026-08-31', 4500.00, 1, 'Contrato inclui manutenção da piscina.'),
-       (3, 3, '2025-07-15', '2026-07-14', 1800.00, 1, 'Aluguel de longo prazo, sem mobília.');
+       (2, 2, '2025-09-01', '2026-08-31', 4500.00, 1, 'Contrato inclui manutenção da piscina.');
