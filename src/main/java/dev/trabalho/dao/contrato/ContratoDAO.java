@@ -2,6 +2,7 @@ package dev.trabalho.dao.contrato;
 
 import dev.trabalho.dao.BaseDAO;
 import dev.trabalho.dao.cliente.ClienteDAO;
+import dev.trabalho.dao.imovel.Imovel;
 import dev.trabalho.dao.imovel.ImovelDAO;
 
 import java.math.BigDecimal;
@@ -101,8 +102,13 @@ public class ContratoDAO extends BaseDAO {
             throw new RuntimeException("Contrato não pode ser nulo");
         }
 
-        if (contrato.getIdImovel() <= 0 || imovelDao.findById(contrato.getIdImovel()) == null) {
+        Imovel imovel = imovelDao.findById(contrato.getIdImovel());
+        if (contrato.getIdImovel() <= 0 || imovel == null) {
             throw new RuntimeException("ID do imóvel inválido");
+        }
+
+        if (!imovel.isDisponivel()) {
+            throw new RuntimeException("O imóvel não está disponível");
         }
 
         if (contrato.getIdCliente() <= 0 || clienteDAO.findById(contrato.getIdCliente()) == null) {

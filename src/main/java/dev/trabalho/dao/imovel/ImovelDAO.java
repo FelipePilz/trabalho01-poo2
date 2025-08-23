@@ -30,6 +30,21 @@ public class ImovelDAO extends BaseDAO {
         }
     }
 
+    public void updateDisponivel(int idImovel, boolean disponivel) {
+        String sql = "UPDATE imoveis SET disponivel = ? WHERE id = ?";
+
+        try (Connection con = con();
+             PreparedStatement pre = con.prepareStatement(sql)) {
+
+            pre.setBoolean(1, disponivel);
+            pre.setInt(2, idImovel);
+
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar disponibilidade do imóvel", e);
+        }
+    }
+
     public List<Imovel> find() {
         String sql = "SELECT * FROM imoveis";
 
